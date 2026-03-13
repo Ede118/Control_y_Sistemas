@@ -15,38 +15,34 @@ int32_t rounding(int64_t X){
     return truncation(X + (1 << (n - 1)));
 }
 
-void calcular(int32_t a, int32_t b){
-    // Multiplicamos en 64 bits para evitar overflow antes de truncar
-    int64_t product = (int64_t)a * b; 
+void calcular(double num1, double num2){
+
+    int32_t num1_Q21_10 = fp2fx(num1);
+    int32_t num2_Q21_10 = fp2fx(num2);
     
-    double real_a = fx2fp(a);
-    double real_b = fx2fp(b);
-    double c_teorico = real_a * real_b;
+    int64_t product_Q21_10 = (int64_t)(num1_Q21_10 * num2_Q21_10); 
+    double product = num1 * num2;
     
-    int32_t c_trunc = truncation(product);
-    int32_t c_round = rounding(product);
+    int32_t product_trunc = truncation(product_Q21_10);
+    int32_t product_round = rounding(product_Q21_10);
     
     char buffer[100]; // Buffer temporal para armar cada línea
 
     printf("╔══════════════════════════════════════════════════════╗\n");
     
-    // Línea de encabezado
     printf("║ %-52s ║\n", "Valores Reales:");
+    sprintf(buffer, "  num1: %.11f", num1); printf("║ %-52s ║\n", buffer);
+    sprintf(buffer, "  num2: %.11f", num2); printf("║ %-52s ║\n", buffer);
     
-    // Líneas de datos
-    sprintf(buffer, "  a: %.6f", real_a);
+    printf("║ %-52s ║\n", "Resultados:");
+
+    sprintf(buffer, "   (double) num1*num2: %.11f", product);
     printf("║ %-52s ║\n", buffer);
     
-    sprintf(buffer, "  b: %.6f", real_b);
+    sprintf(buffer, "   truncation(num1*num2): %.11f", fx2fp(product_trunc));
     printf("║ %-52s ║\n", buffer);
     
-    sprintf(buffer, "(double) a*b teorico: %.6f", c_teorico);
-    printf("║ %-52s ║\n", buffer);
-    
-    sprintf(buffer, "truncation(a*b) -> Real: %.6f", fx2fp(c_trunc));
-    printf("║ %-52s ║\n", buffer);
-    
-    sprintf(buffer, "rounding(a*b)   -> Real: %.6f", fx2fp(c_round));
+    sprintf(buffer, "   rounding(num1*num2): %.11f", fx2fp(product_round));
     printf("║ %-52s ║\n", buffer);
     
     printf("╚══════════════════════════════════════════════════════╝\n");
@@ -56,17 +52,17 @@ void calcular(int32_t a, int32_t b){
 int main(void){
 
     // Se pasa del rango de Q21.11
-    calcular(fp2fx(2000000), fp2fx(10));
+    calcular(2000000, 10);
     // Multiplicación de números negativos
-    calcular(fp2fx(-1), fp2fx(-10));
+    calcular(-1, -10);
     // Multiplicación con 10 números después del punto decimal
-    calcular(fp2fx(1.0000000001), fp2fx(2));
+    calcular(1.0000000001, 2);
     // Multiplicación dentro del rango de Q21.11
-    calcular(fp2fx(100), fp2fx(48));
+    calcular(100, 48);
     // Multiplicación con 2 números con 5 dígitos después del punto decimal
-    calcular(fp2fx(1.11111), fp2fx(2.55555));
+    calcular(1.11111, 2.55555);
     // Multiplicación arbitraria
-    calcular(fp2fx(46.1948), fp2fx(781.4874));
+    calcular(46.1948, 781.4874);
     
     return 0;
 }

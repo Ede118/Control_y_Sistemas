@@ -40,10 +40,40 @@ int main(){
         acum_double += dX[i] * dY[i];
     }
 
-    printf("Acumulado con truncation: %f\n", fx2fp(acum_32a));
-    printf("Acumulado con acumulación en 64 bits: %f\n", fx2fp(acum_64));
-    printf("Acumulado con acumulación en 32 bits: %f\n", fx2fp(acum_32b));
-    printf("Acumulado con double: %f\n", acum_double);
+    char buffer[100]; // Buffer temporal para armar cada línea
+    printf("╔══════════════════════════════════════════════════════╗\n");
+    
+    printf("║ %-52s ║\n", "Suma acumulada por truncation:");
+    sprintf(buffer, "  >> FX: %d", acum_32a); printf("║ %-52s ║\n", buffer);
+    sprintf(buffer, "  >> FP: %.11f", fx2fp(acum_32a)); printf("║ %-52s ║\n", buffer);
+
+    printf("╚══════════════════════════════════════════════════════╝\n");
+
+    printf("╔═════════════════════════════════════════════════════╗\n");
+    
+    printf("║ %-52s ║\n", "Suma acumulada por acumulación en 64 bits:");
+    sprintf(buffer, "  >> FX: %d", acum_64); printf("║ %-52s ║\n", buffer);
+    sprintf(buffer, "  >> FP: %.11f", fx2fp(acum_64)); printf("║ %-52s ║\n", buffer);
+
+    printf("╚══════════════════════════════════════════════════════╝\n");
+
+    printf("╔═════════════════════════════════════════════════════╗\n");
+    
+    printf("║ %-52s ║\n", "Suma acumulada por acumulación en 32 bits:");
+    sprintf(buffer, "  >> FX: %d", acum_32b); printf("║ %-52s ║\n", buffer);
+    sprintf(buffer, "  >> FP: %.11f", fx2fp(acum_32b)); printf("║ %-52s ║\n", buffer);
+
+    printf("╚══════════════════════════════════════════════════════╝\n");
+
+    printf("╔══════════════════════════════════════════════════════╗\n");
+    
+    printf("║ %-52s ║\n", "Suma acumulada con double:");
+    sprintf(buffer, "  >> FP: %.11f", acum_double); printf("║ %-52s ║\n", buffer);
+
+    printf("╚══════════════════════════════════════════════════════╝\n");
+
+    int aux1 = 7609508;
+    printf("%.11f", fx2fp(aux1));
 
     return 0;
 }
