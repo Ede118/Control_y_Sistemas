@@ -6,6 +6,10 @@
 #define fp2fx(f) ((int32_t)((f) * (1 << n)))
 #define fx2fp(q) ((float)(q) / (float)(1 << n))
 
+#define m 20  // Tu resolución actual
+#define fp2fx_(f) ((int64_t)((f) * (1 << m)))
+#define fx2fp_(q) ((float)(q) / (float)(1 << m))
+
 int32_t truncation(int64_t X){
     return (int32_t)(X >> n);
 }
@@ -51,19 +55,31 @@ int main(){
 
     printf("╔═════════════════════════════════════════════════════╗\n");
     
+    printf("║ %-52s ║\n", "Suma acumulada por acumulación en 32 bits:");
+    sprintf(buffer, "  >> FX: %d", acum_32b); printf("║ %-52s ║\n", buffer);
+    sprintf(buffer, "  >> FP: %.11f", fx2fp(acum_32b)); printf("║ %-52s ║\n", buffer);
+
+    printf("╚══════════════════════════════════════════════════════╝\n");
+
+
+    printf("╔═════════════════════════════════════════════════════╗\n");
+    
     printf("║ %-52s ║\n", "Suma acumulada por acumulación en 64 bits:");
     sprintf(buffer, "  >> FX: %d", acum_64); printf("║ %-52s ║\n", buffer);
     sprintf(buffer, "  >> FP: %.11f", fx2fp(acum_64)); printf("║ %-52s ║\n", buffer);
 
     printf("╚══════════════════════════════════════════════════════╝\n");
 
-    printf("╔═════════════════════════════════════════════════════╗\n");
     
-    printf("║ %-52s ║\n", "Suma acumulada por acumulación en 32 bits:");
-    sprintf(buffer, "  >> FX: %d", acum_32b); printf("║ %-52s ║\n", buffer);
-    sprintf(buffer, "  >> FP: %.11f", fx2fp(acum_32b)); printf("║ %-52s ║\n", buffer);
+    printf("╔══════════════════════════════════════════════════════╗\n");
+    
+    printf("║ %-52s ║\n", "Corrección de interpretación desde Q21.20:");
+    sprintf(buffer, "  >> FX: %d", acum_64 / 1024); printf("║ %-52s ║\n", buffer);
+    sprintf(buffer, "  >> FP: %.11f", fx2fp(acum_64/1024)); printf("║ %-52s ║\n", buffer);
 
     printf("╚══════════════════════════════════════════════════════╝\n");
+
+
 
     printf("╔══════════════════════════════════════════════════════╗\n");
     
@@ -71,9 +87,6 @@ int main(){
     sprintf(buffer, "  >> FP: %.11f", acum_double); printf("║ %-52s ║\n", buffer);
 
     printf("╚══════════════════════════════════════════════════════╝\n");
-
-    int aux1 = 7609508;
-    printf("%.11f", fx2fp(aux1));
 
     return 0;
 }
